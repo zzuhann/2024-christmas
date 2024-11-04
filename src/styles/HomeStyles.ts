@@ -293,7 +293,7 @@ export const FormGroup = styled.div`
   }
 `;
 
-export const SubmitButton = styled.button`
+export const SubmitButton = styled.button<{ $isLoading?: boolean }>`
   background-color: rgba(24, 72, 120, 0.8);
   color: white;
   padding: 10px 20px;
@@ -305,8 +305,43 @@ export const SubmitButton = styled.button`
   font-size: 1rem;
   display: block;
   margin: 0 auto;  /* 只讓按鈕置中 */
+  position: relative;
   
   &:hover {
     background-color: rgba(18, 54, 90, 0.9);
+  }
+
+  &:disabled {
+    background-color: ${props => props.$isLoading ? '#4a90e2' : '#cccccc'};
+    cursor: ${props => props.$isLoading ? 'wait' : 'not-allowed'};
+  }
+
+  ${props => props.$isLoading && `
+    color: transparent;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
+      border: 3px solid transparent;
+      border-top-color: #ffffff;
+      border-radius: 50%;
+      animation: button-loading-spinner 1s ease infinite;
+    }
+  `}
+
+  @keyframes button-loading-spinner {
+    from {
+      transform: rotate(0turn);
+    }
+    to {
+      transform: rotate(1turn);
+    }
   }
 `; 

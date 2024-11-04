@@ -4,13 +4,13 @@ import Lottie from 'lottie-react';
 import animationData from '../../public/animation/ending.json';
 import styled from 'styled-components';
 
-const AnimationWrapper = styled.div<{ isEnded: boolean }>`
+const AnimationWrapper = styled.div<{ isEnded: boolean, isAfterEnded: boolean }>`
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  display: ${props => props.isEnded ? 'flex' : 'none'};
+  display: ${props => props.isEnded || props.isAfterEnded ? 'flex' : 'none'};
   justify-content: center;
   align-items: center;
   background: linear-gradient(
@@ -48,17 +48,22 @@ const EndingMessage = styled.p`
 
 interface EndingAnimationProps {
   isEnded: boolean;
+  isAfterEnded: boolean;
 }
 
-export default function EndingAnimation({ isEnded }: EndingAnimationProps) {
+export default function EndingAnimation({ isEnded, isAfterEnded }: EndingAnimationProps) {
   return (
-    <AnimationWrapper isEnded={isEnded}>
+    <AnimationWrapper isEnded={isEnded} isAfterEnded={isAfterEnded}>
       <AnimationContent>
         <Lottie animationData={animationData} loop={true} />
         <EndingMessage>
             去準備卡片啦，我們聖誕節見 ✨<br/>
-            <br/>
-            如果來不及寫表單的話，突然想要明信片可以來密我，聖誕節快樂！
+            {isAfterEnded && (
+              <>
+                <br/>
+                如果來不及寫表單的話，突然想要明信片可以來密我，聖誕節快樂！
+              </>
+            )}
         </EndingMessage>
       </AnimationContent>
     </AnimationWrapper>

@@ -34,28 +34,27 @@ import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import { submitPostCardForm } from '@/services/api';
 import { PostCardForm } from '@/types/api';
+import ResultDialog from '@/components/ResultDialog';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
 export default function Home() {
   const [isEnded, setIsEnded] = useState(false);
+  const [isAfterEnded, setIsAfterEnded] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [dialogState, setDialogState] = useState({
+    isOpen: false,
+    isSuccess: false
+  });
 
-  useEffect(() => {
-    const endDate = dayjs.tz('2024-12-10 23:59:59', 'Asia/Taipei');
-    
-    const checkTime = () => {
-      const now = dayjs().tz('Asia/Taipei');
-      if (now.isAfter(endDate)) {
-        setIsEnded(true);
-      }
-    };
-
-    checkTime();
-  }, []);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    
+    if (isSubmitting) return;
+    
+    setIsSubmitting(true);
     
     const formElement = event.currentTarget;
     const formData = new FormData(formElement);
@@ -71,12 +70,30 @@ export default function Home() {
 
     try {
       await submitPostCardForm(submitData);
-      alert('提交成功！');
+      setDialogState({ isOpen: true, isSuccess: true });
       formElement.reset();
+      setIsEnded(true);
     } catch (error) {
-      alert('提交失敗，請稍後再試');
+      setDialogState({ isOpen: true, isSuccess: false });
+    } finally {
+      setIsSubmitting(false);
     }
   };
+
+
+  useEffect(() => {
+    const endDate = dayjs.tz('2024-12-10 23:59:59', 'Asia/Taipei');
+    
+    const checkTime = () => {
+      const now = dayjs().tz('Asia/Taipei');
+      if (now.isAfter(endDate)) {
+        setIsEnded(true);
+        setIsAfterEnded(true);
+      }
+    };
+
+    checkTime();
+  }, []);
 
   return (
     <>
@@ -167,7 +184,7 @@ export default function Home() {
           ))}
         </section>
 
-        {/* 第四块：联系表单 */}
+        {/* 第四块：联系表 */}
         <section>
           <TitleWrapper>
             <TitleLine />
@@ -179,7 +196,7 @@ export default function Home() {
           </TitleWrapper>
           
           <ContactForm onSubmit={handleSubmit} style={{ position: 'relative' }}>
-            <EndingAnimation isEnded={isEnded} />
+            <EndingAnimation isEnded={isEnded} isAfterEnded={isAfterEnded} />
             <FormGroup>
               <label htmlFor="name">
                 你的名字
@@ -209,10 +226,21 @@ export default function Home() {
               <label htmlFor="message">想額外說的話</label>
               <textarea id="message" name="message"></textarea>
             </FormGroup>
-            <SubmitButton type="submit" disabled={isEnded}>送出</SubmitButton>
+            <SubmitButton 
+              type="submit" 
+              disabled={isEnded || isSubmitting}
+              $isLoading={isSubmitting}
+            >
+              送出
+            </SubmitButton>
           </ContactForm>
         </section>
       </Container>
+      <ResultDialog 
+        isOpen={dialogState.isOpen}
+        onClose={() => setDialogState({ isOpen: false, isSuccess: dialogState.isSuccess })}
+        isSuccess={dialogState.isSuccess}
+      />
     </>
   );
 }
