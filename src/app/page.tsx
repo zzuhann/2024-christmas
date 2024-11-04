@@ -32,6 +32,8 @@ import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
+import { submitPostCardForm } from '@/services/api';
+import { PostCardForm } from '@/types/api';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -51,6 +53,30 @@ export default function Home() {
 
     checkTime();
   }, []);
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    
+    const formElement = event.currentTarget;
+    const formData = new FormData(formElement);
+    
+    const submitData: PostCardForm = {
+      name: formData.get('name') as string,
+      email: formData.get('email') as string || undefined,
+      address: formData.get('address') as string,
+      status: formData.get('status') as string || undefined,
+      message: formData.get('message') as string || undefined,
+      createTime: dayjs().tz('Asia/Taipei').valueOf(),
+    };
+
+    try {
+      await submitPostCardForm(submitData);
+      alert('提交成功！');
+      formElement.reset();
+    } catch (error) {
+      alert('提交失敗，請稍後再試');
+    }
+  };
 
   return (
     <>
@@ -152,7 +178,7 @@ export default function Home() {
             <TitleLine />
           </TitleWrapper>
           
-          <ContactForm style={{ position: 'relative' }}>
+          <ContactForm onSubmit={handleSubmit} style={{ position: 'relative' }}>
             <EndingAnimation isEnded={isEnded} />
             <FormGroup>
               <label htmlFor="name">
