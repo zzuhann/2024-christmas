@@ -27,8 +27,31 @@ import {
 } from "@/styles/HomeStyles";
 import { seasonsData } from "./constants";
 import ParallaxImage from '@/components/ParallaxImage';
+import EndingAnimation from '@/components/EndingAnimation';
+import { useEffect, useState } from 'react';
+import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 export default function Home() {
+  const [isEnded, setIsEnded] = useState(false);
+
+  useEffect(() => {
+    const endDate = dayjs.tz('2024-12-10 23:59:59', 'Asia/Taipei');
+    
+    const checkTime = () => {
+      const now = dayjs().tz('Asia/Taipei');
+      if (now.isAfter(endDate)) {
+        setIsEnded(true);
+      }
+    };
+
+    checkTime();
+  }, []);
+
   return (
     <>
       <div className="floating-lights">
@@ -129,7 +152,8 @@ export default function Home() {
             <TitleLine />
           </TitleWrapper>
           
-          <ContactForm>
+          <ContactForm style={{ position: 'relative' }}>
+            <EndingAnimation isEnded={isEnded} />
             <FormGroup>
               <label htmlFor="name">
                 你的名字
@@ -159,7 +183,7 @@ export default function Home() {
               <label htmlFor="message">想額外說的話</label>
               <textarea id="message" name="message"></textarea>
             </FormGroup>
-            <SubmitButton type="submit">送出</SubmitButton>
+            <SubmitButton type="submit" disabled={isEnded}>送出</SubmitButton>
           </ContactForm>
         </section>
       </Container>
