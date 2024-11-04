@@ -247,7 +247,7 @@ export const ContactForm = styled.form`
 
 export const FormGroup = styled.div`
   margin-bottom: 1.5rem;
-  width: 100%;  /* 確保表單欄位佔滿寬度 */
+  width: 100%;
   
   label {
     display: block;
@@ -255,7 +255,7 @@ export const FormGroup = styled.div`
     color: #fff;
 
     .required {
-      color: #ff6b6b;
+      color: #d32f2f;
       margin-left: 4px;
     }
   }
@@ -267,6 +267,12 @@ export const FormGroup = styled.div`
     margin-bottom: 0.5rem;
     line-height: 1.4;
   }
+
+  .error-message {
+    color: #d32f2f;
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+  }
   
   input, textarea {
     width: 100%;
@@ -276,6 +282,7 @@ export const FormGroup = styled.div`
     background: rgba(255, 255, 255, 0.1);
     color: #fff;
     backdrop-filter: blur(4px);
+    transition: all 0.3s ease;
     
     &:focus {
       outline: none;
@@ -286,10 +293,15 @@ export const FormGroup = styled.div`
     &::placeholder {
       color: rgba(255, 255, 255, 0.5);
     }
-  }
-  
-  textarea {
-    height: 150px;
+
+    &.error {
+      border-color: #d32f2f;
+      
+      &:focus {
+        border-color: #d32f2f;
+        box-shadow: 0 0 0 1px #d32f2f;
+      }
+    }
   }
 `;
 

@@ -39,6 +39,12 @@ import ResultDialog from '@/components/ResultDialog';
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
+interface FormErrors {
+  name?: string;
+  email?: string;
+  address?: string;
+}
+
 export default function Home() {
   const [isEnded, setIsEnded] = useState(false);
   const [isAfterEnded, setIsAfterEnded] = useState(false);
@@ -47,17 +53,50 @@ export default function Home() {
     isOpen: false,
     isSuccess: false
   });
+  const [errors, setErrors] = useState<FormErrors>({});
 
+  const validateForm = (formData: FormData): boolean => {
+    const newErrors: FormErrors = {};
+    
+    // 驗證名字
+    const name = formData.get('name') as string;
+    if (!name?.trim()) {
+      newErrors.name = '這個欄位必填哦';
+    }
+
+    // 驗證地址
+    const address = formData.get('address') as string;
+    if (!address?.trim()) {
+      newErrors.address = '這個欄位必填哦';
+    }
+
+    // 驗證 email（如果有填寫的話）
+    const email = formData.get('email') as string;
+    if (email?.trim()) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        newErrors.email = 'email 格式不正確哦';
+      }
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     
     if (isSubmitting) return;
     
-    setIsSubmitting(true);
-    
     const formElement = event.currentTarget;
     const formData = new FormData(formElement);
+
+    // 驗證表單
+    if (!validateForm(formData)) {
+      return;
+    }
+    
+    setIsSubmitting(true);
     
     const submitData: PostCardForm = {
       name: formData.get('name') as string,
@@ -72,6 +111,7 @@ export default function Home() {
       await submitPostCardForm(submitData);
       setDialogState({ isOpen: true, isSuccess: true });
       formElement.reset();
+      setErrors({});
       setIsEnded(true);
     } catch (error) {
       setDialogState({ isOpen: true, isSuccess: false });
@@ -79,7 +119,6 @@ export default function Home() {
       setIsSubmitting(false);
     }
   };
-
 
   useEffect(() => {
     const endDate = dayjs.tz('2024-12-10 23:59:59', 'Asia/Taipei');
@@ -195,25 +234,43 @@ export default function Home() {
             <TitleLine />
           </TitleWrapper>
           
-          <ContactForm onSubmit={handleSubmit} style={{ position: 'relative' }}>
+          <ContactForm onSubmit={handleSubmit} style={{ position: 'relative' }} noValidate>
             <EndingAnimation isEnded={isEnded} isAfterEnded={isAfterEnded} />
             <FormGroup>
               <label htmlFor="name">
                 你的名字
                 <span className="required">*</span>
               </label>
-              <input type="text" id="name" name="name" required />
+              <input 
+                type="text" 
+                id="name" 
+                name="name" 
+                className={errors.name ? 'error' : ''} 
+              />
+              {errors.name && <div className="error-message">{errors.name}</div>}
             </FormGroup>
             <FormGroup>
               <label htmlFor="email">信箱</label>
-              <input type="email" id="email" name="email" />
+              <input 
+                type="email" 
+                id="email" 
+                name="email" 
+                className={errors.email ? 'error' : ''} 
+              />
+              {errors.email && <div className="error-message">{errors.email}</div>}
             </FormGroup>
             <FormGroup>
               <label htmlFor="address">
                 地址（可以寫面交）
                 <span className="required">*</span>
               </label>
-              <input type="text" id="address" name="address" required />
+              <input 
+                type="text" 
+                id="address" 
+                name="address" 
+                className={errors.address ? 'error' : ''} 
+              />
+              {errors.address && <div className="error-message">{errors.address}</div>}
             </FormGroup>
             <FormGroup>
               <label htmlFor="status">你的近况</label>
