@@ -1,6 +1,6 @@
 'use client'
 
-import Image from "next/image";
+import Image from 'next/image';
 import {
   Container,
   PhotoSection,
@@ -26,6 +26,7 @@ import {
   SeasonTextBlock
 } from "@/styles/HomeStyles";
 import { seasonsData } from "./constants";
+import ParallaxImage from '@/components/ParallaxImage';
 
 export default function Home() {
   return (
@@ -97,7 +98,7 @@ export default function Home() {
             <SeasonBlock key={season.id}>
               <SeasonContent reverse={season.reverse}>
                 <SeasonImageWrapper>
-                  <Image
+                  <ParallaxImage
                     src={season.image}
                     alt={season.title}
                     width={300}
