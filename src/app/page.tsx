@@ -1,6 +1,6 @@
-'use client'
+"use client";
 
-import Image from 'next/image';
+import Image from "next/image";
 import {
   Container,
   PhotoSection,
@@ -23,18 +23,19 @@ import {
   SeasonImageWrapper,
   SeasonTextContainer,
   SeasonImageFrame,
-  SeasonTextBlock
+  SeasonTextBlock,
 } from "@/styles/HomeStyles";
 import { seasonsData } from "./constants";
-import ParallaxImage from '@/components/ParallaxImage';
-import EndingAnimation from '@/components/EndingAnimation';
-import { useEffect, useState } from 'react';
-import dayjs from 'dayjs';
-import timezone from 'dayjs/plugin/timezone';
-import utc from 'dayjs/plugin/utc';
-import { submitPostCardForm } from '@/services/api';
-import { PostCardForm } from '@/types/api';
-import ResultDialog from '@/components/ResultDialog';
+import ParallaxImage from "@/components/ParallaxImage";
+import EndingAnimation from "@/components/EndingAnimation";
+import { useEffect, useState } from "react";
+import dayjs from "dayjs";
+import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
+import { submitPostCardForm } from "@/services/api";
+import { PostCardForm } from "@/types/api";
+import ResultDialog from "@/components/ResultDialog";
+import emailjs from "@emailjs/browser";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -51,31 +52,51 @@ export default function Home() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [dialogState, setDialogState] = useState({
     isOpen: false,
-    isSuccess: false
+    isSuccess: false,
   });
   const [errors, setErrors] = useState<FormErrors>({});
 
+  const sendEmail = (fromName: string) => {
+    emailjs
+      .send(
+        "service_1ntg378",
+        "template_tkno4ce",
+        {
+          from_name: fromName,
+        },
+        "hq9I2K5MtKz8_oT0P"
+      )
+      .then(
+        () => {
+          console.log("SUCCESS!");
+        },
+        (error) => {
+          console.log("FAILED...", error.text);
+        }
+      );
+  };
+
   const validateForm = (formData: FormData): boolean => {
     const newErrors: FormErrors = {};
-    
+
     // 驗證名字
-    const name = formData.get('name') as string;
+    const name = formData.get("name") as string;
     if (!name?.trim()) {
-      newErrors.name = '這個欄位必填哦';
+      newErrors.name = "這個欄位必填哦";
     }
 
     // 驗證地址
-    const address = formData.get('address') as string;
+    const address = formData.get("address") as string;
     if (!address?.trim()) {
-      newErrors.address = '這個欄位必填哦';
+      newErrors.address = "這個欄位必填哦";
     }
 
     // 驗證 email（如果有填寫的話）
-    const email = formData.get('email') as string;
+    const email = formData.get("email") as string;
     if (email?.trim()) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
-        newErrors.email = 'email 格式不正確哦';
+        newErrors.email = "email 格式不正確哦";
       }
     }
 
@@ -85,9 +106,9 @@ export default function Home() {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    
+
     if (isSubmitting) return;
-    
+
     const formElement = event.currentTarget;
     const formData = new FormData(formElement);
 
@@ -95,16 +116,16 @@ export default function Home() {
     if (!validateForm(formData)) {
       return;
     }
-    
+
     setIsSubmitting(true);
-    
+
     const submitData: PostCardForm = {
-      name: formData.get('name') as string,
-      email: formData.get('email') as string || undefined,
-      address: formData.get('address') as string,
-      status: formData.get('status') as string || undefined,
-      message: formData.get('message') as string || undefined,
-      createTime: dayjs().tz('Asia/Taipei').valueOf(),
+      name: formData.get("name") as string,
+      email: (formData.get("email") as string) || undefined,
+      address: formData.get("address") as string,
+      status: (formData.get("status") as string) || undefined,
+      message: (formData.get("message") as string) || undefined,
+      createTime: dayjs().tz("Asia/Taipei").valueOf(),
     };
 
     try {
@@ -113,6 +134,7 @@ export default function Home() {
       formElement.reset();
       setErrors({});
       setIsEnded(true);
+      sendEmail(formData.get("name") as string);
     } catch (error) {
       setDialogState({ isOpen: true, isSuccess: false });
     } finally {
@@ -121,10 +143,10 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const endDate = dayjs.tz('2024-12-10 23:59:59', 'Asia/Taipei');
-    
+    const endDate = dayjs.tz("2024-12-10 23:59:59", "Asia/Taipei");
+
     const checkTime = () => {
-      const now = dayjs().tz('Asia/Taipei');
+      const now = dayjs().tz("Asia/Taipei");
       if (now.isAfter(endDate)) {
         setIsEnded(true);
         setIsAfterEnded(true);
@@ -170,21 +192,32 @@ export default function Home() {
           </TitleWrapper>
           <TextContent>
             <p>
-              聖誕明信片從大一到現在已經過了大概 6 年啦（雖然中間幾年有斷掉了），每一年都想和很久沒見的朋友有一個藉口、用文字或是訊息的方式有一份連結。作為一年的結束與即將進到下一年的聖誕節，在這樣冬天的日子裡收到卡片，也許可以作為一種幸福的來源、一種結束與開始。<br/>
-              <br/>
-              今年用網站的方式和大家相見！<br/>
-              <br/>
-              形式是最底下的表單可以填寫你的名字、你的近況、地址<br/>
-              在聖誕節附近會有一張有寫字的明信片寄到你那邊<br/>
-              <br/>
-              想要你寫下近況的理由是，在過著不同生活圈以後的日子，可以更了解你在做什麼、<br/>
-              這樣寫卡片的時候，可以寫下更多內容：）<br/>
-              （不然會寫得很普通！哈哈哈）<br/>
-              <br/>
-              作為交換，也會放上我這一年的近況<br/>
-              <br/>
-              如果有什麼近況想要直接面對面交流，也可以在下面寫<br/>
-              可以一起吃飯聊個天～！</p>
+              聖誕明信片從大一到現在已經過了大概 6
+              年啦（雖然中間幾年有斷掉了），每一年都想和很久沒見的朋友有一個藉口、用文字或是訊息的方式有一份連結。作為一年的結束與即將進到下一年的聖誕節，在這樣冬天的日子裡收到卡片，也許可以作為一種幸福的來源、一種結束與開始。
+              <br />
+              <br />
+              今年用網站的方式和大家相見！
+              <br />
+              <br />
+              形式是最底下的表單可以填寫你的名字、你的近況、地址
+              <br />
+              在聖誕節附近會有一張有寫字的明信片寄到你那邊
+              <br />
+              <br />
+              想要你寫下近況的理由是，在過著不同生活圈以後的日子，可以更了解你在做什麼、
+              <br />
+              這樣寫卡片的時候，可以寫下更多內容：）
+              <br />
+              （不然會寫得很普通！哈哈哈）
+              <br />
+              <br />
+              作為交換，也會放上我這一年的近況
+              <br />
+              <br />
+              如果有什麼近況想要直接面對面交流，也可以在下面寫
+              <br />
+              可以一起吃飯聊個天～！
+            </p>
           </TextContent>
         </section>
 
@@ -212,7 +245,9 @@ export default function Home() {
                   <SeasonImageFrame />
                 </SeasonImageWrapper>
                 <SeasonTextContainer>
-                  <SeasonTitle reverse={!season.reverse}>{season.title}</SeasonTitle>
+                  <SeasonTitle reverse={!season.reverse}>
+                    {season.title}
+                  </SeasonTitle>
                   <SeasonText>
                     <SeasonTextBlock />
                     <p dangerouslySetInnerHTML={{ __html: season.content }} />
@@ -233,49 +268,60 @@ export default function Home() {
             </TitleContainer>
             <TitleLine />
           </TitleWrapper>
-          
-          <ContactForm onSubmit={handleSubmit} style={{ position: 'relative' }} noValidate>
+
+          <ContactForm
+            onSubmit={handleSubmit}
+            style={{ position: "relative" }}
+            noValidate
+          >
             <EndingAnimation isEnded={isEnded} isAfterEnded={isAfterEnded} />
             <FormGroup>
               <label htmlFor="name">
                 你的名字
                 <span className="required">*</span>
               </label>
-              <input 
-                type="text" 
-                id="name" 
-                name="name" 
-                className={errors.name ? 'error' : ''} 
+              <input
+                type="text"
+                id="name"
+                name="name"
+                className={errors.name ? "error" : ""}
               />
-              {errors.name && <div className="error-message">{errors.name}</div>}
+              {errors.name && (
+                <div className="error-message">{errors.name}</div>
+              )}
             </FormGroup>
             <FormGroup>
               <label htmlFor="email">信箱</label>
-              <input 
-                type="email" 
-                id="email" 
-                name="email" 
-                className={errors.email ? 'error' : ''} 
+              <input
+                type="email"
+                id="email"
+                name="email"
+                className={errors.email ? "error" : ""}
               />
-              {errors.email && <div className="error-message">{errors.email}</div>}
+              {errors.email && (
+                <div className="error-message">{errors.email}</div>
+              )}
             </FormGroup>
             <FormGroup>
               <label htmlFor="address">
                 地址（可以寫面交）
                 <span className="required">*</span>
               </label>
-              <input 
-                type="text" 
-                id="address" 
-                name="address" 
-                className={errors.address ? 'error' : ''} 
+              <input
+                type="text"
+                id="address"
+                name="address"
+                className={errors.address ? "error" : ""}
               />
-              {errors.address && <div className="error-message">{errors.address}</div>}
+              {errors.address && (
+                <div className="error-message">{errors.address}</div>
+              )}
             </FormGroup>
             <FormGroup>
               <label htmlFor="status">你的近况</label>
               <div className="description">
-                如果生活圈比較遠，剛好又沒有寫近況的話，怕寫的很官方、可能就不會寄了哦 &gt;&lt;!
+                如果生活圈比較遠，剛好又沒有寫近況的話，怕寫的很官方、可能就不會寄了哦
+                &gt;&lt;!
               </div>
               <textarea id="status" name="status"></textarea>
             </FormGroup>
@@ -283,8 +329,8 @@ export default function Home() {
               <label htmlFor="message">想額外說的話</label>
               <textarea id="message" name="message"></textarea>
             </FormGroup>
-            <SubmitButton 
-              type="submit" 
+            <SubmitButton
+              type="submit"
               disabled={isEnded || isSubmitting}
               $isLoading={isSubmitting}
             >
@@ -293,9 +339,11 @@ export default function Home() {
           </ContactForm>
         </section>
       </Container>
-      <ResultDialog 
+      <ResultDialog
         isOpen={dialogState.isOpen}
-        onClose={() => setDialogState({ isOpen: false, isSuccess: dialogState.isSuccess })}
+        onClose={() =>
+          setDialogState({ isOpen: false, isSuccess: dialogState.isSuccess })
+        }
         isSuccess={dialogState.isSuccess}
       />
     </>
