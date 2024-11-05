@@ -135,7 +135,7 @@ export default function Home() {
       setErrors({});
       setIsEnded(true);
       sendEmail(formData.get("name") as string);
-    } catch (error) {
+    } catch (_error) {
       setDialogState({ isOpen: true, isSuccess: false });
     } finally {
       setIsSubmitting(false);
