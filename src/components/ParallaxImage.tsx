@@ -1,14 +1,14 @@
-'use client'
+"use client";
 
-import { useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
-import styled from 'styled-components';
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import styled from "styled-components";
 
 const ParallaxContainer = styled.div<{ isVisible: boolean }>`
   width: 100%;
   height: 100%;
-  transform: translateY(${props => props.isVisible ? '0' : '30px'});
-  opacity: ${props => props.isVisible ? 1 : 0};
+  transform: translateY(${(props) => (props.isVisible ? "0" : "30px")});
+  opacity: ${(props) => (props.isVisible ? 1 : 0)};
   transition: all 0.6s ease-out;
 
   img {
@@ -25,11 +25,18 @@ interface ParallaxImageProps {
   priority?: boolean;
 }
 
-export default function ParallaxImage({ src, alt, width, height, priority }: ParallaxImageProps) {
+export default function ParallaxImage({
+  src,
+  alt,
+  width,
+  height,
+  priority,
+}: ParallaxImageProps) {
   const [isVisible, setIsVisible] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const currentRef = ref.current; // 將 ref.current 的值儲存到局部變數
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -39,17 +46,17 @@ export default function ParallaxImage({ src, alt, width, height, priority }: Par
       },
       {
         threshold: 0.1,
-        rootMargin: '50px',
+        rootMargin: "50px",
       }
     );
 
-    if (ref.current) {
-      observer.observe(ref.current);
+    if (currentRef) {
+      observer.observe(currentRef);
     }
 
     return () => {
-      if (ref.current) {
-        observer.unobserve(ref.current);
+      if (currentRef) {
+        observer.unobserve(currentRef);
       }
     };
   }, []);
@@ -65,4 +72,4 @@ export default function ParallaxImage({ src, alt, width, height, priority }: Par
       />
     </ParallaxContainer>
   );
-} 
+}
