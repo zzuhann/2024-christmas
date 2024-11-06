@@ -82,22 +82,13 @@ export default function Home() {
     // 驗證名字
     const name = formData.get("name") as string;
     if (!name?.trim()) {
-      newErrors.name = "這個欄位必填哦";
+      newErrors.name = "這個欄位必填";
     }
 
     // 驗證地址
     const address = formData.get("address") as string;
     if (!address?.trim()) {
-      newErrors.address = "這個欄位必填哦";
-    }
-
-    // 驗證 email（如果有填寫的話）
-    const email = formData.get("email") as string;
-    if (email?.trim()) {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) {
-        newErrors.email = "email 格式不正確哦";
-      }
+      newErrors.address = "這個欄位必填";
     }
 
     setErrors(newErrors);
@@ -121,7 +112,6 @@ export default function Home() {
 
     const submitData: PostCardForm = {
       name: formData.get("name") as string,
-      email: (formData.get("email") as string) || undefined,
       address: formData.get("address") as string,
       status: (formData.get("status") as string) || undefined,
       message: (formData.get("message") as string) || undefined,
@@ -292,20 +282,8 @@ export default function Home() {
               )}
             </FormGroup>
             <FormGroup>
-              <label htmlFor="email">信箱</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                className={errors.email ? "error" : ""}
-              />
-              {errors.email && (
-                <div className="error-message">{errors.email}</div>
-              )}
-            </FormGroup>
-            <FormGroup>
               <label htmlFor="address">
-                地址（可以寫面交）
+                地址（可以寫面交/也可以寫email）
                 <span className="required">*</span>
               </label>
               <input

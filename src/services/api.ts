@@ -1,7 +1,7 @@
 import { PostCardForm } from "@/types/api";
 
 const GOOGLE_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbwj9_DkrL5G4deg_EyjMdtnG1JHlHfmbj7cWLEHWkqIuNxUBDJz0B7Qkk6LPcGI5yQt/exec";
+  "https://script.google.com/macros/s/AKfycbx2VA2OxDMLfzqZ8BzTbsP4sedjWm29JQLCafcDfJ4CHXWfa3AJwdCYQ60fbFu9esSL/exec";
 
 export const submitPostCardForm = async (formData: PostCardForm) => {
   try {
