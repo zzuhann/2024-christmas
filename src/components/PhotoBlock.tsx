@@ -16,6 +16,9 @@ export default function PhotoBlock() {
           width={745}
           height={496}
           priority
+          loading="eager"
+          fetchPriority="high"
+          sizes="(max-width: 768px) 100vw, 745px"
         />
         <PhotoFrame />
         <PhotoCaption>2024 Christmas</PhotoCaption>

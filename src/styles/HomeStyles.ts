@@ -123,6 +123,13 @@ export const TextContent = styled.div`
   max-width: 600px;
   margin: 0 auto;
   font-size: 1rem;
+  will-change: transform;
+  contain: content;
+
+  p {
+    margin: 0;
+    line-height: 1.6;
+  }
 
   @media (max-width: 768px) {
     font-size: 0.9rem;

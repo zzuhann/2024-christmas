@@ -13,8 +13,19 @@ import { formValidate } from "@/utils/formValidate";
 import { FormErrors } from "@/types/error";
 import PhotoBlock from "@/components/PhotoBlock";
 import AboutBlock from "@/components/AboutBlock";
-import SeasonsBlock from "@/components/SeasonsBlock";
-import ContactBlock from "@/components/ContactBlock";
+import dynamic from "next/dynamic";
+
+const FloatingLights = dynamic(() => import("@/components/FloatingLights"), {
+  ssr: false,
+});
+
+const SeasonsBlock = dynamic(() => import("@/components/SeasonsBlock"), {
+  ssr: false,
+});
+
+const ContactBlock = dynamic(() => import("@/components/ContactBlock"), {
+  ssr: false,
+});
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -84,12 +95,7 @@ export default function Home() {
 
   return (
     <>
-      <div className="floating-lights">
-        <div className="light"></div>
-        <div className="light"></div>
-        <div className="light"></div>
-        <div className="light"></div>
-      </div>
+      <FloatingLights />
       <Container>
         <PhotoBlock />
         <AboutBlock />
@@ -102,13 +108,15 @@ export default function Home() {
           errors={errors}
         />
       </Container>
-      <ResultDialog
-        isOpen={dialogState.isOpen}
-        onClose={() =>
-          setDialogState({ isOpen: false, isSuccess: dialogState.isSuccess })
-        }
-        isSuccess={dialogState.isSuccess}
-      />
+      {dialogState.isOpen && (
+        <ResultDialog
+          isOpen={dialogState.isOpen}
+          onClose={() =>
+            setDialogState({ isOpen: false, isSuccess: dialogState.isSuccess })
+          }
+          isSuccess={dialogState.isSuccess}
+        />
+      )}
     </>
   );
 }
