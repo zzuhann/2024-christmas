@@ -1,8 +1,8 @@
-import { useEffect, useRef } from 'react';
-import styled from 'styled-components';
-import Lottie from 'lottie-react';
-import successAnimation from '../../public/animation/ending.json';
-import failAnimation from '../../public/animation/fail.json';
+import { useEffect, useRef } from "react";
+import styled from "styled-components";
+import Lottie from "lottie-react";
+import successAnimation from "../../public/animation/ending.json";
+import failAnimation from "../../public/animation/fail.json";
 
 interface ResultDialogProps {
   isOpen: boolean;
@@ -49,7 +49,7 @@ const Button = styled.button`
   cursor: pointer;
   font-size: 1rem;
   margin-top: 1rem;
-  
+
   &:hover {
     background-color: rgba(74, 144, 226, 0.9);
   }
@@ -61,24 +61,28 @@ const AnimationContainer = styled.div`
   margin: 0 auto;
 `;
 
-export default function ResultDialog({ isOpen, onClose, isSuccess }: ResultDialogProps) {
+export default function ResultDialog({
+  isOpen,
+  onClose,
+  isSuccess,
+}: ResultDialogProps) {
   const overlayRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
+      if (event.key === "Escape") {
         onClose();
       }
     };
 
     if (isOpen) {
-      document.addEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'hidden';
+      document.addEventListener("keydown", handleEscape);
+      document.body.style.overflow = "hidden";
     }
 
     return () => {
-      document.removeEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'unset';
+      document.removeEventListener("keydown", handleEscape);
+      document.body.style.overflow = "unset";
     };
   }, [isOpen, onClose]);
 
@@ -99,14 +103,10 @@ export default function ResultDialog({ isOpen, onClose, isSuccess }: ResultDialo
           />
         </AnimationContainer>
         <Message>
-          {isSuccess ? (
-            '送出成功！聖誕節見！✨'
-          ) : (
-            '送出失敗QQ 再送一次看看！'
-          )}
+          {isSuccess ? "送出成功！聖誕節見！✨" : "送出失敗QQ 再送一次看看！"}
         </Message>
         <Button onClick={onClose}>確認</Button>
       </DialogContent>
     </DialogOverlay>
   );
-} 
+}

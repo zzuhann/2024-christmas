@@ -1,6 +1,6 @@
-'use client'
+"use client";
 
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const Container = styled.div`
   width: 100%;
@@ -8,7 +8,7 @@ export const Container = styled.div`
   margin: 0 auto;
   padding: 2rem;
   color: #fff;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
 export const PhotoSection = styled.section`
@@ -28,7 +28,7 @@ export const PhotoWrapper = styled.div`
   height: auto;
   aspect-ratio: 3/2;
   margin-bottom: 60px;
-  
+
   img {
     width: 100%;
     height: 100%;
@@ -60,7 +60,7 @@ export const PhotoCaption = styled.p`
   text-align: left;
   color: rgba(255, 255, 255);
   font-size: clamp(1.5rem, 5vw, 3rem);
-  font-family: 'Spectral SC', serif;
+  font-family: var(--font-spectral), serif;
   font-weight: 300;
   letter-spacing: 0;
 
@@ -141,7 +141,7 @@ export const SeasonContent = styled.div<{ reverse?: boolean }>`
   gap: 4rem;
   align-items: flex-start;
   justify-content: center;
-  flex-direction: ${props => props.reverse ? 'row-reverse' : 'row'};
+  flex-direction: ${(props) => (props.reverse ? "row-reverse" : "row")};
   flex: 1;
 
   @media (max-width: 768px) {
@@ -189,7 +189,7 @@ export const SeasonImageFrame = styled.div`
 export const SeasonTitle = styled.h3<{ reverse?: boolean }>`
   position: absolute;
   top: -5px;
-  ${props => props.reverse ? 'right: 0;' : 'left: 0;'}
+  ${(props) => (props.reverse ? "right: 0;" : "left: 0;")}
   font-size: 3rem;
   margin: 0;
   font-weight: 300;
@@ -218,7 +218,7 @@ export const SeasonText = styled.div`
   position: relative;
   padding: 2rem;
   margin-top: 1rem;
-  
+
   p {
     position: relative;
     z-index: 1;
@@ -229,7 +229,7 @@ export const SeasonTextContainer = styled.div`
   position: relative;
   padding-top: 2rem;
   max-width: 600px;
-  min-height: 300px;  // 確保有足夠的高度顯示內容
+  min-height: 300px; // 確保有足夠的高度顯示內容
 
   @media (max-width: 768px) {
     padding-top: 0;
@@ -248,7 +248,7 @@ export const ContactForm = styled.form`
 export const FormGroup = styled.div`
   margin-bottom: 1.5rem;
   width: 100%;
-  
+
   label {
     display: block;
     margin-bottom: 0.5rem;
@@ -259,7 +259,7 @@ export const FormGroup = styled.div`
       margin-left: 4px;
     }
   }
-  
+
   .description {
     font-size: 0.85rem;
     color: rgba(255, 255, 255, 0.7);
@@ -273,8 +273,9 @@ export const FormGroup = styled.div`
     font-size: 0.85rem;
     margin-top: 0.25rem;
   }
-  
-  input, textarea {
+
+  input,
+  textarea {
     width: 100%;
     padding: 0.5rem;
     border: 1px solid rgba(255, 255, 255, 0.2);
@@ -283,20 +284,20 @@ export const FormGroup = styled.div`
     color: #fff;
     backdrop-filter: blur(4px);
     transition: all 0.3s ease;
-    
+
     &:focus {
       outline: none;
       border-color: rgba(255, 255, 255, 0.5);
       background: rgba(255, 255, 255, 0.15);
     }
-    
+
     &::placeholder {
       color: rgba(255, 255, 255, 0.5);
     }
 
     &.error {
       border-color: #d32f2f;
-      
+
       &:focus {
         border-color: #d32f2f;
         box-shadow: 0 0 0 1px #d32f2f;
@@ -316,19 +317,21 @@ export const SubmitButton = styled.button<{ $isLoading?: boolean }>`
   transition: all 0.3s ease;
   font-size: 1rem;
   display: block;
-  margin: 0 auto;  /* 只讓按鈕置中 */
+  margin: 0 auto; /* 只讓按鈕置中 */
   position: relative;
-  
+
   &:hover {
     background-color: rgba(18, 54, 90, 0.9);
   }
 
   &:disabled {
-    background-color: ${props => props.$isLoading ? '#4a90e2' : '#cccccc'};
-    cursor: ${props => props.$isLoading ? 'wait' : 'not-allowed'};
+    background-color: ${(props) => (props.$isLoading ? "#4a90e2" : "#cccccc")};
+    cursor: ${(props) => (props.$isLoading ? "wait" : "not-allowed")};
   }
 
-  ${props => props.$isLoading && `
+  ${(props) =>
+    props.$isLoading &&
+    `
     color: transparent;
     
     &::after {
@@ -356,4 +359,4 @@ export const SubmitButton = styled.button<{ $isLoading?: boolean }>`
       transform: rotate(1turn);
     }
   }
-`; 
+`;
