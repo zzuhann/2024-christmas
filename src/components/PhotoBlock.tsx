@@ -11,7 +11,7 @@ export default function PhotoBlock() {
     <PhotoSection>
       <PhotoWrapper>
         <Image
-          src="/images/banner.jpg"
+          src="/images/banner.webp"
           alt="Main photo"
           width={745}
           height={496}

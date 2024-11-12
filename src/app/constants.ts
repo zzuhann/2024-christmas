@@ -8,9 +8,9 @@ export interface SeasonData {
 
 export const seasonsData: SeasonData[] = [
   {
-    id: 'spring',
-    title: '春',
-    image: '/images/spring.png',
+    id: "spring",
+    title: "春",
+    image: "/images/spring.webp",
     content: `去年底到 1 月初去加州玩，是國中以後第一次出國，四周都是聽不懂中文的人，所以講話可以特別大聲。<br/>
       原來旅遊是這種感覺，很難以形容的悸動，開始影響我對於旅遊的嚮往。<br/>
       <br/>
@@ -23,9 +23,9 @@ export const seasonsData: SeasonData[] = [
     reverse: false,
   },
   {
-    id: 'summer',
-    title: '夏',
-    image: '/images/summer.png',
+    id: "summer",
+    title: "夏",
+    image: "/images/summer.webp",
     content: `這個時期經歷了一些職場的情緒波動。是真的在這裡很認真的成長了、也很喜歡和同事相處，還是有些地方沒辦法接受，所以這個時期也開始找工作了、錄取了之後很快就提離職了。（不知道公司好不好還去塔羅占卜🔮）<br/>
       <br/>
       這段時間夾雜著很多情緒，有很多疑惑也有很多憤慨，總是用一些叛逆來表達自己的不滿，回頭看還是很幼稚，可是卻沒有覺得後悔。離職前、離職當天都收到了很多很多的愛。<br/>
@@ -36,14 +36,14 @@ export const seasonsData: SeasonData[] = [
     reverse: true,
   },
   {
-    id: 'autumn',
-    title: '秋',
-    image: '/images/autumn.png',
+    id: "autumn",
+    title: "秋",
+    image: "/images/autumn.webp",
     content: `7 月開始去新公司報到了，有別於之前的工作型態，變得更加混合式、同事也比過往遇到的更資深，身為超級菜鳥不知道自己為什麼被錄取了、邊抱著膽怯的心邊度過了試用期，現在也還在習慣這樣新的步調、也還在探索工作上的目標。<br/>
     <br/>
     相比前公司大家會一起出去內用，新公司的人似乎更習慣外帶回來邊工作邊吃，反正都是在公司吃我就開始自己帶便當（現在以做便當作為週末的收尾 QQ 。）<br/>
     <br/>
     也開始嘗試了一些不同的活動，跟朋友一起去上課、一星期裡偶爾會找一天去咖啡廳、也有了自己的相機！第一次正式的幫朋友拍人像照、修圖，以緊張的心情把完成品傳給他們看之後，作品能被喜歡真的太好了。`,
     reverse: false,
-  }
-]; 
+  },
+];
