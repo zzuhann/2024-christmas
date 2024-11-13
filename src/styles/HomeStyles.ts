@@ -166,12 +166,6 @@ export const SeasonImageWrapper = styled.div`
     border-radius: 8px;
     object-fit: cover;
   }
-
-  @media (max-width: 768px) {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 1/1;
-  }
 `;
 
 export const SeasonImageFrame = styled.div`
@@ -185,10 +179,10 @@ export const SeasonImageFrame = styled.div`
   z-index: -1;
 
   @media (max-width: 768px) {
-    right: 20px;
-    bottom: 20px;
-    width: 80%;
-    height: 80%;
+    // right: 20px;
+    // bottom: 20px;
+    // width: 80%;
+    // height: 80%;
     border-width: 1px;
   }
 `;
