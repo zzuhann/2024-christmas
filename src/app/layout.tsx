@@ -22,8 +22,8 @@ const notoSansTC = Noto_Sans_TC({
 });
 
 export const metadata: Metadata = {
-  title: "2024 Christmas is coming!",
-  description: "2024 Christmas is coming!",
+  title: "2025 Christmas is coming!",
+  description: "2025 Christmas is coming!",
   icons: {
     icon: "/favicon.ico",
   },

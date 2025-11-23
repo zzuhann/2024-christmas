@@ -1,7 +1,7 @@
 import { PostCardForm } from "@/types/api";
 
 const GOOGLE_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbx2VA2OxDMLfzqZ8BzTbsP4sedjWm29JQLCafcDfJ4CHXWfa3AJwdCYQ60fbFu9esSL/exec";
+  "https://script.google.com/macros/s/AKfycby4BOmPX_74DCq0O30Kq5_UMf5IPH2lHEBsW-aTpTSygBdt0rQ4s0xpLARzBwxeFvJV/exec";
 
 export const submitPostCardForm = async (formData: PostCardForm) => {
   try {
@@ -11,7 +11,10 @@ export const submitPostCardForm = async (formData: PostCardForm) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(formData),
+      body: JSON.stringify({
+        ...formData,
+        sheetName: "2025",
+      }),
     });
 
     return true;

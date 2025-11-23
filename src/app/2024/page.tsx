@@ -12,14 +12,18 @@ import { sendEmail } from "@/utils";
 import { formValidate } from "@/utils/formValidate";
 import { FormErrors } from "@/types/error";
 import PhotoBlock from "@/components/PhotoBlock";
-import AboutBlock from "@/components/2025/AboutBlock";
+import AboutBlock from "@/components/2024/AboutBlock";
 import dynamic from "next/dynamic";
 
 const FloatingLights = dynamic(() => import("@/components/FloatingLights"), {
   ssr: false,
 });
 
-const ContactBlock = dynamic(() => import("@/components/2025/ContactBlock"), {
+const SeasonsBlock = dynamic(() => import("@/components/SeasonsBlock"), {
+  ssr: false,
+});
+
+const ContactBlock = dynamic(() => import("@/components/2024/ContactBlock"), {
   ssr: false,
 });
 
@@ -76,7 +80,7 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const endDate = dayjs.tz("2025-12-10 23:59:59", "Asia/Taipei");
+    const endDate = dayjs.tz("2024-12-10 23:59:59", "Asia/Taipei");
 
     const checkTime = () => {
       const now = dayjs().tz("Asia/Taipei");
@@ -93,12 +97,9 @@ export default function Home() {
     <>
       <FloatingLights />
       <Container>
-        <PhotoBlock
-          src="/images/otter_knock.webp"
-          year="2025"
-          objectPosition="left"
-        />
+        <PhotoBlock src="/images/banner.webp" year="2024" />
         <AboutBlock />
+        <SeasonsBlock />
         <ContactBlock
           onSubmit={handleSubmit}
           isEnded={isEnded}

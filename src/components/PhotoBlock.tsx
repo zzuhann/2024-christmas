@@ -5,13 +5,24 @@ import {
   PhotoFrame,
   PhotoCaption,
 } from "@/styles/HomeStyles";
+import styled from "styled-components";
 
-export default function PhotoBlock() {
+const StyledImage = styled(Image)<{ $objectPosition: string }>`
+  object-position: ${(props) => props.$objectPosition};
+`;
+
+type PhotoBlockProps = {
+  src: string;
+  year: string;
+  objectPosition?: string;
+}
+
+export default function PhotoBlock({ src, year, objectPosition = 'center' }: PhotoBlockProps) {
   return (
     <PhotoSection>
       <PhotoWrapper>
-        <Image
-          src="/images/banner.webp"
+        <StyledImage
+          src={src}
           alt="Main photo"
           width={745}
           height={496}
@@ -19,9 +30,10 @@ export default function PhotoBlock() {
           loading="eager"
           fetchPriority="high"
           sizes="(max-width: 768px) 100vw, 745px"
+          $objectPosition={objectPosition}
         />
         <PhotoFrame />
-        <PhotoCaption>2024 Christmas</PhotoCaption>
+        <PhotoCaption>{year} Christmas</PhotoCaption>
       </PhotoWrapper>
     </PhotoSection>
   );

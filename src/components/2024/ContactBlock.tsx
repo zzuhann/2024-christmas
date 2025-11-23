@@ -9,7 +9,7 @@ import {
   SubmitButton,
   TitleContainer,
 } from "@/styles/HomeStyles";
-import EndingAnimation from "./EndingAnimation";
+import EndingAnimation from "../EndingAnimation";
 
 interface ContactBlockProps {
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => Promise<void>;
